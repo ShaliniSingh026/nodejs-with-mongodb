@@ -4,6 +4,8 @@ const mongodb = require('mongodb')
 const MongoClient = mongodb.MongoClient
 //For knowing the connection URL to MonoClient
 const connectionURL = 'mongodb://127.0.0.1:27017'
+const ObjectID = mongodb.ObjectId;
+const id= new ObjectID();
 // Database name 'demo'
 const database = 'demo'
 
@@ -43,6 +45,13 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
             gender: 'Female',
             age: 30,
             phn_no: "7905679945"
+        },
+        {
+            name: 'Harry',
+            email: 'techj78@gmail.com',
+            gender: 'Male',
+            age: 24,
+            phn_no: "9887605432"
         }
         
     
@@ -51,19 +60,18 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
             return console.log('unable to insert')
         }
 
-        //console.log(result.ops)
-
     })
-
-    /*db.collection('user_detail').findOne({ name:"Nick" }, (error, user_detail) => {
+     // Finding mutiple documents
+    db.collection('user_detail').findOne({  _id: new  ObjectID("622069d8d9ec954150066f79")}, (error, user_detail) => {
          console.log(user_detail)
-        });*/
+        });
 
+        // Finding single document
         db.collection('user_detail').find({ name:'Binny' }).toArray((error, user_detail) => {
             console.log(user_detail)
         });
 
-        const doWorkPromise = new Promise((resolve, reject) => {
+     const doWorkPromise = new Promise((resolve, reject) => {
             setTimeout(() => {
             resolve([7, 4, 1])
             }, 2000)
@@ -73,7 +81,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
            }).catch((error) => {
             console.log('Error!', error)
         });
-// Updating single document
+           // Updating single document
             db.collection('user_detail').updateOne({
                 name:"Binny"
                }, {
@@ -87,7 +95,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
                })
 
             //updating multiple documents
-            /*db.collection('user_detail').updateMany({
+            db.collection('user_detail').updateMany({
                 name: 'Nick'
                 }, {
                 $set: {
@@ -97,9 +105,9 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
                 console.log(result.modifiedCount)
                 }).catch((error) => {
                 console.log(error) 
-                });*/
+                });
 
-            //Deleting single document
+           //Deleting single document
                db.collection('user_detail').deleteOne({
                 age:30
                }).then((result) => {
@@ -108,14 +116,14 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
                 console.log(error)
                })
 
-               /*//Deleting multiple documents
+               //Deleting multiple documents
                db.collection('user_details').deleteMany({
                 age: 30
                }).then((result) => {
                 console.log(result)
                }).catch((error) => {
                 console.log(error)
-               })*/
+               })
 
             });
 
